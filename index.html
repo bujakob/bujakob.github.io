@@ -52,6 +52,7 @@
             justify-content: space-between;
             align-items: top;
             flex-wrap: wrap;
+            margin-top: 3vh;
             gap: 20px;
         }
 
@@ -62,13 +63,6 @@
             letter-spacing: -2px;
         }
         
-        .second-title {
-            font-size: 3rem;
-            font-weight: 600;
-            margin-top: 0.75rem;
-            letter-spacing: -2px;
-        }
-
         /* --- Modern Material Switch --- */
         .switch-wrapper {
             position: relative;
@@ -223,10 +217,7 @@
 <body>
 
     <header>
-        <div>
-            <h1 class="main-title">jakob<br>burger</h1>
-            <h2 class="second-title">portfolio</h2>
-        </div>
+        <h1 class="main-title">jakob<br>burger</h1>
         
         <input type="checkbox" id="theme-toggle" class="switch-checkbox" onchange="toggleTheme(this)">
         <label for="theme-toggle" class="switch-wrapper">
