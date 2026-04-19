@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jakob burger // Wrapped</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
     
     <style>
@@ -16,6 +17,13 @@
             --secondary-accent: #ff4d00; /* Vibrant Orange */
             --gradient: linear-gradient(135deg, #1DB954 0%, #191414 100%);
             --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            
+            /* Custom Switch Colors */
+            --handle-light-color: #A0B3F2; /* Light Blue from image */
+            --text-light-color: #5C6BC0; /* Darker Blue from image */
+            --handle-dark-color: #000000; /* Black from image */
+            --text-dark-color: #000000; /* Black from image */
+            --switch-bg-color: #ffffff; /* Always White */
         }
 
         [data-theme="dark"] {
@@ -48,7 +56,7 @@
             margin: 0 auto 4rem auto;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
         }
 
         .main-title {
@@ -68,25 +76,93 @@
             display: inline-block;
         }
 
-        /* --- Theme Toggle --- */
-        .toggle-container {
+        /* --- Custom Theme Toggle from image_0.png --- */
+        .theme-switcher-container {
+            position: relative;
+            display: inline-block;
+            width: 250px;
+            height: 70px;
+        }
+
+        .theme-checkbox {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .theme-label {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--switch-bg-color);
+            transition: 0.4s;
+            border-radius: 35px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            padding: 10px;
-            background: var(--card-bg);
-            border-radius: 50px;
-            box-shadow: var(--card-shadow);
+            padding: 0 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            overflow: hidden;
         }
 
-        #theme-toggle {
-            cursor: pointer;
-            width: 20px;
-            height: 20px;
+        .theme-handle {
+            position: absolute;
+            height: 60px;
+            width: 60px;
+            left: 5px;
+            bottom: 5px;
+            background-color: var(--handle-light-color);
+            transition: 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
         }
 
-        /* --- Layout Grid --- */
+        .icon-moon, .icon-sun {
+            position: absolute;
+            transition: 0.4s;
+            fill: currentColor;
+            width: 30px;
+            height: 30px;
+        }
+
+        .icon-sun { opacity: 0; transform: scale(0.5); }
+        .icon-moon { opacity: 1; transform: scale(1); }
+
+        .theme-text {
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            transition: 0.4s;
+            width: 100%;
+            text-align: right;
+        }
+
+        .text-light { color: var(--text-light-color); }
+        .text-dark { color: var(--text-dark-color); opacity: 0; }
+
+        /* Dark Mode State */
+        .theme-checkbox:checked + .theme-label {
+            /* Keep label white */
+        }
+
+        .theme-checkbox:checked + .theme-label .theme-handle {
+            background-color: var(--handle-dark-color);
+            transform: translateX(180px); /* Adjust based on label width */
+        }
+
+        .theme-checkbox:checked + .theme-label .icon-sun { opacity: 1; transform: scale(1); }
+        .theme-checkbox:checked + .theme-label .icon-moon { opacity: 0; transform: scale(0.5); }
+
+        .theme-checkbox:checked + .theme-label .theme-text { text-align: left; }
+        .theme-checkbox:checked + .theme-label .text-light { opacity: 0; }
+        .theme-checkbox:checked + .theme-label .text-dark { opacity: 1; }
+
+        /* --- Layout Grid (Combined PC) --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -110,11 +186,16 @@
             gap: 1.5rem;
         }
 
-        /* Card Counts Logic */
-        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-        .grid-1 { grid-template-columns: 1fr; }
-        .grid-6 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+        /* PC/Tablet: All in a row */
+        .grid-combined-quotes {
+            /* 2 Lehrerquotes + 3 Schülerquotes = 5 Karten */
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .grid-combined-photos {
+            /* 1 4Years + 6 Reisen = 7 Karten */
+            grid-template-columns: repeat(7, 1fr);
+        }
 
         /* --- Cards --- */
         .card {
@@ -162,21 +243,47 @@
         }
 
         /* Customizing specific groups with colors */
-        .group-lehrer .card { border-bottom: 8px solid #ff4d00; }
-        .group-schueler .card { border-bottom: 8px solid #9d00ff; }
-        .group-4years .card { border-bottom: 8px solid #00d4ff; min-height: 400px; }
-        .group-reisen .card { border-bottom: 8px solid var(--accent-color); min-height: 200px; }
+        .card-lehrer { border-bottom: 8px solid #ff4d00; }
+        .card-schueler { border-bottom: 8px solid #9d00ff; }
+        .card-4years { border-bottom: 8px solid #00d4ff; min-height: 400px; }
+        .card-reisen { border-bottom: 8px solid var(--accent-color); min-height: 200px; }
 
-        /* Responsive Tweaks */
+        /* --- Responsive Design (PC/Tablet) --- */
+        @media (max-width: 1024px) {
+            .theme-switcher-container { width: 220px; height: 60px; }
+            .theme-handle { width: 50px; height: 50px; left: 5px; bottom: 5px; }
+            .theme-checkbox:checked + .theme-label .theme-handle { transform: translateX(160px); }
+            .theme-text { font-size: 0.8rem; }
+            .grid-combined-quotes { grid-template-columns: repeat(3, 1fr); } /* Stagger quotes a bit */
+            .grid-combined-photos { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* --- Responsive Design (Mobile) --- */
         @media (max-width: 768px) {
             body { padding: 1rem; }
-            header { flex-direction: column; gap: 20px; }
-            .grid-6 { grid-template-columns: repeat(2, 1fr); }
-            .card { min-height: 180px; }
+            header { flex-direction: column; gap: 20px; align-items: center; }
+            .main-title { text-align: center; font-size: 4rem; }
+            
+            .theme-switcher-container { width: 200px; height: 50px; }
+            .theme-label { border-radius: 25px; }
+            .theme-handle { width: 40px; height: 40px; left: 5px; bottom: 5px; }
+            .theme-checkbox:checked + .theme-label .theme-handle { transform: translateX(150px); }
+            
+            /* Gestapelte Karten am Handy */
+            .grid-combined-quotes, .grid-combined-photos {
+                grid-template-columns: 1fr;
+            }
+            .card { min-height: 200px; }
+            .card-4years { min-height: 300px; }
         }
 
         @media (max-width: 480px) {
-            .grid-6 { grid-template-columns: 1fr; }
+            .main-title { font-size: 3rem; }
+            .section-title { text-align: center; }
+            .sub-header { font-size: 1.5rem; text-align: center; display: block; width: fit-content; margin-left: auto; margin-right: auto; }
+            .theme-switcher-container { width: 180px; height: 45px; }
+            .theme-handle { width: 35px; height: 35px; left: 5px; bottom: 5px; }
+            .theme-checkbox:checked + .theme-label .theme-handle { transform: translateX(135px); }
         }
     </style>
 </head>
@@ -184,70 +291,75 @@
 
     <header>
         <h1 class="main-title">jakob<br>burger</h1>
-        <div class="toggle-container" onclick="toggleTheme()">
-            <span style="font-weight: bold; font-size: 0.8rem;">DARK MODE</span>
-            <input type="checkbox" id="theme-toggle">
+        <div class="theme-switcher-container">
+            <input type="checkbox" id="theme-toggle" class="theme-checkbox" onchange="toggleTheme(this)">
+            <label for="theme-toggle" class="theme-label">
+                <span class="theme-handle">
+                    <svg class="icon-moon" viewBox="0 0 24 24"><path d="M12.1 22C6.58 22 2.1 17.52 2.1 12C2.1 6.84 6.01 2.61 11.01 2.1V4.11C7.1 4.6 4.1 7.96 4.1 12C4.1 16.41 7.69 20 12.1 20C14.12 20 15.96 19.25 17.37 18.01L18.8 19.43C17.02 21.01 14.67 22 12.1 22Z"/></svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24"><path d="M12 7V3H11V7C8.6 7 6.6 8.6 6 10.9L7 11.2C7.4 9.4 9.1 8 11 8C11.6 8 12.1 8.2 12.6 8.6L13.3 7.9C12.9 7.5 12.4 7.2 11.9 7.1V3M21 11V12H17.1V13.1H21V14.1H17.1V15.1H21V16H16H15.1V12H16V11H21M7 12.1V16H11V15.1H7.1V14.1H11V13.1H7.1V12.1H11V11H7.1V12H7M21 8H13V7H21V8M13 3V4H21V3H13Z"/></svg>
+                </span>
+                <span class="theme-text text-light">LIGHT MODE</span>
+                <span class="theme-text text-dark">DARK MODE</span>
+            </label>
         </div>
     </header>
 
     <main class="container">
         <h2 class="sub-header">Maturazeitung Einsendungen</h2>
 
-        <section class="group-lehrer">
-            <h3 class="section-title">Lehrerquotes</h3>
-            <div class="grid grid-2">
-                <a href="#" class="card"> </a>
-                <a href="#" class="card"> </a>
+        <section class="group-quotes">
+            <h3 class="section-title">Alle Quotes</h3>
+            <div class="grid grid-combined-quotes">
+                <a href="#" class="card card-lehrer"> </a>
+                <a href="#" class="card card-lehrer"> </a>
+                
+                <a href="#" class="card card-schueler"> </a>
+                <a href="#" class="card card-schueler"> </a>
+                <a href="#" class="card card-schueler"> </a>
             </div>
         </section>
 
-        <section class="group-schueler">
-            <h3 class="section-title">Schülerquotes</h3>
-            <div class="grid grid-3">
-                <a href="#" class="card"> </a>
-                <a href="#" class="card"> </a>
-                <a href="#" class="card"> </a>
-            </div>
-        </section>
-
-        <section class="group-4years">
-            <h3 class="section-title">Fotos der letzten 4 Jahre</h3>
-            <div class="grid grid-1">
-                <a href="#" class="card"> </a>
-            </div>
-        </section>
-
-        <section class="group-reisen">
-            <h3 class="section-title">Fotos der Schulreisen</h3>
-            <div class="grid grid-6">
-                <a href="#" class="card"> </a>
-                <a href="#" class="card"> </a>
-                <a href="#" class="card"> </a>
-                <a href="#" class="card"> </a>
-                <a href="#" class="card"> </a>
-                <a href="#" class="card"> </a>
+        <section class="group-photos">
+            <h3 class="section-title">Alle Fotos</h3>
+            <div class="grid grid-combined-photos">
+                <a href="#" class="card card-4years"> </a>
+                
+                <a href="#" class="card card-reisen"> </a>
+                <a href="#" class="card card-reisen"> </a>
+                <a href="#" class="card card-reisen"> </a>
+                <a href="#" class="card card-reisen"> </a>
+                <a href="#" class="card card-reisen"> </a>
+                <a href="#" class="card card-reisen"> </a>
             </div>
         </section>
     </main>
 
     <script>
-        function toggleTheme() {
-            const body = document.body;
-            const checkbox = document.getElementById('theme-toggle');
-            
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.removeAttribute('data-theme');
-                checkbox.checked = false;
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                checkbox.checked = true;
+        // Initialisierung des Schalters basierend auf gespeicherter Präferenz
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTheme = localStorage.getItem('theme');
+            const toggle = document.getElementById('theme-toggle');
+            if (currentTheme) {
+                document.body.setAttribute('data-theme', currentTheme);
+                if (currentTheme === 'dark') {
+                    toggle.checked = true;
+                }
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                // Optionale automatische Dark Mode-Erkennung
+                // document.body.setAttribute('data-theme', 'dark');
+                // toggle.checked = true;
             }
-        }
+        });
 
-        // Initialize checkbox state based on system preference (optional)
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            // Uncomment the line below to enable auto-dark mode on load
-            // toggleTheme();
+        function toggleTheme(input) {
+            const body = document.body;
+            if (input.checked) {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            }
         }
     </script>
 </body>
