@@ -58,7 +58,13 @@
         .main-title {
             font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 800;
-            text-transform: uppercase;
+            line-height: 0.85;
+            letter-spacing: -2px;
+        }
+        
+        .second-title {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
             line-height: 0.85;
             letter-spacing: -2px;
         }
@@ -150,7 +156,6 @@
 
         .section-title {
             font-size: 1rem;
-            text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 1.5rem;
             color: var(--accent-color);
@@ -219,6 +224,7 @@
 
     <header>
         <h1 class="main-title">jakob<br>burger</h1>
+        <h2 class="second-title">portfolio</h2>
         
         <input type="checkbox" id="theme-toggle" class="switch-checkbox" onchange="toggleTheme(this)">
         <label for="theme-toggle" class="switch-wrapper">
@@ -255,7 +261,7 @@
 
         <div class="row-group">
             <div class="sub-section flex-1">
-                <h3 class="section-title">Fotos der letzten 4 Jahre</h3>
+                <h3 class="section-title">Fotos der 4 Jahre</h3>
                 <div class="card-grid grid-1">
                     <a href="#" class="card card-4years"></a>
                 </div>
