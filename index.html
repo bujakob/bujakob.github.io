@@ -230,7 +230,13 @@
             header { justify-content: center; text-align: center; }
             .grid-2, .grid-3, .grid-6 { grid-template-columns: 1fr; }
             .card { min-height: 180px; }
-            .hero-decoration { display: none; } /* Auf Mobile ausblenden für mehr Platz */
+            .hero-decoration { 
+                    display: block;    /* Bild wieder einschalten */
+                    width: 90%;       /* Etwas größer, damit es den Hintergrund füllt */
+                    opacity: 0.2;     /* Sehr dezent, damit man den Namen noch lesen kann */
+                    top: -50px;       /* Ein bisschen nach oben schieben */
+                    right: -20px;
+                }
         }
     </style>
 </head>
