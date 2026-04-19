@@ -72,7 +72,7 @@
         /* --- Modern Material Switch --- */
         .switch-wrapper {
             position: relative;
-            width: 260px;
+            width: 166px;
             height: 64px;
             background: #ffffff;
             border-radius: 100px;
@@ -128,12 +128,12 @@
 
         /* Switch Logic */
         .switch-checkbox:checked + .switch-wrapper .handle {
-            transform: translateX(196px);
+            transform: translateX(100px);
             background-color: var(--handle-dark);
         }
 
-        .switch-checkbox:checked + .switch-wrapper .text-light { opacity: 0.2; }
-        .switch-checkbox:not(:checked) + .switch-wrapper .text-dark { opacity: 0.2; }
+        .switch-checkbox:checked + .switch-wrapper .text-light { opacity: 0; }
+        .switch-checkbox:not(:checked) + .switch-wrapper .text-dark { opacity: 0; }
 
         /* --- Layout --- */
         .container { max-width: 1400px; margin: 0 auto; }
