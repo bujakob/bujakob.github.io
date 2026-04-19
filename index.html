@@ -26,7 +26,7 @@
             --card-bg: #1e1e1e;
             --text-color: #ffffff;
             --accent-color: #1ed760;
-            --switch-bg: #ffffff; /* Label bleibt weiß für Kontrast zum BG */
+            --switch-bg: #ffffff;
             --card-shadow: 0 10px 40px rgba(0,0,0,0.4);
         }
 
@@ -43,6 +43,24 @@
             color: var(--text-color);
             padding: 2rem;
             overflow-x: hidden;
+            position: relative; /* Wichtig für die Positionierung des Bildes */
+        }
+
+        /* --- Hero Image Decoration --- */
+        .hero-decoration {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 45%; /* Größe anpassen */
+            max-width: 600px;
+            z-index: -1; /* Hinter dem Text */
+            opacity: 0.8;
+            pointer-events: none; /* Man kann durch das Bild klicken */
+        }
+
+        /* Invertiert das Bild im Dark Mode für bessere Sichtbarkeit */
+        [data-theme="dark"] .hero-decoration {
+            filter: invert(1) brightness(0.8);
         }
 
         header {
@@ -50,7 +68,7 @@
             margin: 0 auto 3rem auto;
             display: flex;
             justify-content: space-between;
-            align-items: top;
+            align-items: flex-start;
             flex-wrap: wrap;
             margin-top: 3vh;
             gap: 20px;
@@ -61,6 +79,7 @@
             font-weight: 800;
             line-height: 0.8;
             letter-spacing: -2px;
+            z-index: 1;
         }
         
         /* --- Modern Material Switch --- */
@@ -75,6 +94,7 @@
             display: flex;
             align-items: center;
             padding: 0 8px;
+            z-index: 10; /* Über dem Bild */
         }
 
         .switch-checkbox { display: none; }
@@ -120,7 +140,6 @@
             font-size: 28px;
         }
 
-        /* Switch Logic */
         .switch-checkbox:checked + .switch-wrapper .handle {
             transform: translateX(100px);
             background-color: var(--handle-dark);
@@ -130,7 +149,7 @@
         .switch-checkbox:not(:checked) + .switch-wrapper .text-dark { opacity: 0; }
 
         /* --- Layout --- */
-        .container { max-width: 1400px; margin: 0 auto; }
+        .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
 
         .master-header {
             font-size: clamp(1.5rem, 4vw, 2.5rem);
@@ -143,7 +162,7 @@
             display: flex;
             gap: 2rem;
             margin-bottom: 4rem;
-            align-items: stretch; /* Macht alle Spalten in der Reihe gleich hoch */
+            align-items: stretch;
         }
 
         .sub-section { flex: 1; display: flex; flex-direction: column; }
@@ -162,7 +181,6 @@
             height: 100%;
         }
 
-        /* Quote Spalten: 2/5 und 3/5 Platzierung */
         .flex-2 { flex: 2; }
         .flex-3 { flex: 3; }
         .flex-1 { flex: 1; }
@@ -173,19 +191,17 @@
         .grid-1 { grid-template-columns: 1fr; }
         .grid-6 { grid-template-columns: repeat(6, 1fr); }
 
-        /* --- Cards --- */
         .card {
             background-color: var(--card-bg);
             border-radius: 20px;
             padding: 1.5rem;
-            min-height: 200px; /* Einheitliche Mindesthöhe */
+            min-height: 200px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             text-align: center;
-            vertical-align: middle;
             font-weight: 600;
-            line-height: 0.95;
+            line-height: 0.8;
             text-decoration: none;
             color: inherit;
             box-shadow: var(--card-shadow);
@@ -200,25 +216,28 @@
             color: #000;
         }
 
-        .card-lehrer { border-bottom: 8px solid #ff4d00; font-size: 6rem; }
-        .card-schueler { border-bottom: 8px solid #9d00ff; font-size: 6rem; }
+        .card-lehrer { border-bottom: 8px solid #ff4d00; font-size: 7.5rem; }
+        .card-schueler { border-bottom: 8px solid #9d00ff; font-size: 7.5rem; }
         .card-4years { border-bottom: 8px solid #00d4ff; font-size: 2rem; }
         .card-reisen { border-bottom: 8px solid var(--accent-color); font-size: 2rem; }
 
-        /* --- Responsive --- */
         @media (max-width: 1100px) {
             .row-group { flex-direction: column; }
             .grid-6 { grid-template-columns: repeat(3, 1fr); }
+            .hero-decoration { width: 60%; opacity: 0.4; }
         }
 
         @media (max-width: 768px) {
             header { justify-content: center; text-align: center; }
             .grid-2, .grid-3, .grid-6 { grid-template-columns: 1fr; }
-            .card { min-height: 200px; }
+            .card { min-height: 180px; }
+            .hero-decoration { display: none; } /* Auf Mobile ausblenden für mehr Platz */
         }
     </style>
 </head>
 <body>
+
+    <img src="hero_bg.jpg" alt="" class="hero-decoration">
 
     <header>
         <h1 class="main-title">jakob<br>burger</h1>
@@ -293,7 +312,6 @@
             }
         }
 
-        // Init Theme
         document.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
